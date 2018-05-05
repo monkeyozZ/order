@@ -1,8 +1,8 @@
 <template>
 <div>
-  <v-header></v-header>
+  <v-header :headertext="title"></v-header>
   <router-view></router-view>
-  <v-footer></v-footer>
+  <v-footer :curselect = "curselect"></v-footer>
 </div>
 </template>
 
@@ -16,7 +16,13 @@ export default {
   },
   data () {
     return {
+      title: '',
+      curselect: ''
     }
+  },
+  beforeMount () {
+    this.title = this.$route.meta.headertext
+    this.curselect = this.$route.name
   }
 }
 </script>

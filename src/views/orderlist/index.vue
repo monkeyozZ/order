@@ -35,10 +35,10 @@
                       </div>
                       <flexbox>
                         <flexbox-item  v-if="item.jifen >= 100">
-                          <button class="order_btn order_btn_bule">100积分兑换</button>
+                          <button class="order_btn order_btn_bule" @click="showdialong()">100积分兑换</button>
                         </flexbox-item>
                         <flexbox-item>
-                          <button class="order_btn order_btn_yellow">50J币抢单</button>
+                          <button class="order_btn order_btn_yellow" @click="showfaildialong()">50J币抢单</button>
                         </flexbox-item>
                       </flexbox>
                     </div>
@@ -88,11 +88,41 @@
                 </flexbox>
             </swiper-item>
           </swiper>
-  </div>
+
+      <confirm v-model="showfail"
+      :title="tip"
+      :confirm-text="confirm"
+      :cancel-text="cancel"
+      >
+        <p style="text-align:center;" :class="{'fail': tip ===''}">{{content}}</p>
+      </confirm>
+
+      <x-dialog v-model="is_show_dialong">
+        <div class="dialong_box">
+          <div class="s_title">
+            <p :class="{'fail': auth == false}">{{dialongObj.dialong_title}}</p>
+          </div>
+
+          <p class="s_content">{{dialongObj.dialong_content}}</p>
+
+          <flexbox justify="center">
+            <flexbox-item :span="5" v-if="!auth">
+              <x-button @click.native="closedialong()" class="bg_reset">以后再说</x-button>
+            </flexbox-item>
+            <flexbox-item :span="5" v-if="!auth">
+              <x-button @click.native="closedialong()">前往认证</x-button>
+            </flexbox-item>
+            <flexbox-item :span="5" v-if="auth">
+              <x-button @click.native="closedialong()">确定</x-button>
+            </flexbox-item>
+          </flexbox>
+        </div>
+      </x-dialog>
+    </div>
 </template>
 
 <script>
-import { Tab, TabItem, Swiper, SwiperItem, Flexbox, FlexboxItem, XButton } from 'vux'
+import { Tab, TabItem, Swiper, SwiperItem, Flexbox, FlexboxItem, XButton, Confirm, XDialog } from 'vux'
 export default {
   components: {
     Tab,
@@ -101,7 +131,9 @@ export default {
     SwiperItem,
     Flexbox,
     FlexboxItem,
-    XButton
+    XButton,
+    Confirm,
+    XDialog
   },
   data () {
     return {
@@ -154,7 +186,29 @@ export default {
           gongjijing: '有公积金',
           jifen: 80
         }
-      ]
+      ],
+      showfail: false,
+      tip: '',
+      content: '抱歉，您的J币不足，请先充值',
+      confirm: '前往充值',
+      cancel: '以后再说',
+      dialongObj: {
+        dialong_title: '抢单成功',
+        dialong_content: '请尽快与客户联系已购订单可在「客户」菜单中管理'
+      },
+      is_show_dialong: false,
+      auth: true
+    }
+  },
+  methods: {
+    showfaildialong () {
+      this.showfail = !this.showfail
+    },
+    showdialong () {
+      this.is_show_dialong = true
+    },
+    closedialong () {
+      this.is_show_dialong = false
     }
   }
 }
@@ -233,5 +287,53 @@ export default {
   .order_btn_bule{
     background: linear-gradient( #1389ef, #047ce2);
   }
+  }
+  .weui-btn{
+    font-size: 15px!important;
+  }
+  .weui-dialog{
+    border-radius: 5px!important;
+  }
+  .weui-dialog__ft{
+    background-color: #f0f0f0;
+    color:#888888;
+  }
+  .weui-dialog__btn_primary{
+    color: #0178df!important;
+  }
+  .weui-dialog__ft{
+    line-height: 40px!important;
+    font-size: 15px!important;
+  }
+  .weui-dialog__bd:first-child {
+    padding: 1.5em 20px 0em!important;
+    font-size: 16px;
+  }
+  .fail{
+    color: #fb4b3e!important;
+  }
+  .success{
+    color: #949493;
+  }
+  .dialong_box{
+    padding-bottom: 10px;
+  }
+  .s_title{
+    height: 40px;
+    background-color: #f8f8f7;
+    p{
+      color: #ff9801;
+      line-height: 40px;
+    }
+  }
+  .s_content{
+    margin: 10px 0 25px 0;
+    color: #949493;
+    padding: 0 20px;
+    font-size: 14px;
+  }
+  .bg_reset{
+    background-color: #b0b0b0!important;
+    color: #484646!important;
   }
 </style>

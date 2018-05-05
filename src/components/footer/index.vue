@@ -1,11 +1,11 @@
 <template>
   <div>
     <tabbar>
-      <tabbar-item>
+      <tabbar-item :selected="curselect === 'orderList'">
         <svg-icon slot="icon" icon-class="order"></svg-icon>
         <span slot="label">抢单</span>
       </tabbar-item>
-      <tabbar-item>
+      <tabbar-item :selected="curselect === 'customerList'">
         <svg-icon slot="icon" icon-class="customer"></svg-icon>
         <span slot="label">客户</span>
       </tabbar-item>
@@ -21,6 +21,7 @@
 import { Tabbar, TabbarItem } from 'vux'
 import testAPI from '@/api/test'
 export default {
+  props: ['curselect'],
   components: {
     Tabbar,
     TabbarItem
