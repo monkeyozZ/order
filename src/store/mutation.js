@@ -1,0 +1,2 @@
+const HEADER_TEXT = 'HEADER_TEXT'
+export { HEADER_TEXT }

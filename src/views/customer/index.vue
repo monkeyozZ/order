@@ -9,44 +9,45 @@
       <flexbox justify="center">
       <flexbox-item :span="11.168">
         <div class="list_item" v-for="(item, index) in user_info" :key="index">
-          <div class="card_title">
-            <flexbox>
-                <flexbox-item :span="1.5"><p>{{item.name}}</p></flexbox-item>
-                <flexbox-item :span="1.37"><p>{{item.age}}</p></flexbox-item>
-                <flexbox-item class="money"><p>{{item.money}}</p></flexbox-item>
-            </flexbox>
-          </div>
-          <div class="person">
-            <flexbox :gutter="0" align="center">
-              <flexbox-item :span="0.08"><svg-icon icon-class='addrss'></svg-icon></flexbox-item>
-              <flexbox-item class="base_info"> <span>{{item.address}}</span> <span>{{item.job}}</span></flexbox-item>
-            </flexbox>
-            <flexbox :gutter="0" align="center">
-              <flexbox-item :span="0.08"><svg-icon icon-class='card'></svg-icon></flexbox-item>
-              <flexbox-item class="base_info">
-                <span>{{item.home}}</span>
-                <span>{{item.car}}</span>
-                <span>{{item.baodan}}</span>
-                <span>{{item.card}}</span>
-                <span>{{item.shebao}} </span>
-                <span>{{item.gongjijing}}</span>
-              </flexbox-item>
-            </flexbox>
-          </div>
-          <div class="card_footer">
-            <flexbox :gutter="0" align="center">
-              <flexbox-item :span="6" class="order_time">
-                <p>{{item.time|transformTime}}</p>
-              </flexbox-item>
-              <flexbox-item :span="6" class="order_money">
-                <p>3</p>
-              </flexbox-item>
-            </flexbox>
-          </div>
+          <router-link to="/customer/details">
+            <div class="card_title">
+              <flexbox>
+                  <flexbox-item :span="1.5"><p>{{item.name}}</p></flexbox-item>
+                  <flexbox-item :span="2"><p>{{item.age}}</p></flexbox-item>
+                  <flexbox-item class="money"><p>{{item.money}}</p></flexbox-item>
+              </flexbox>
+            </div>
+            <div class="person">
+              <flexbox :gutter="0" align="center">
+                <flexbox-item :span="0.08"><svg-icon icon-class='addrss'></svg-icon></flexbox-item>
+                <flexbox-item class="base_info"> <span>{{item.address}}</span> <span>{{item.job}}</span></flexbox-item>
+              </flexbox>
+              <flexbox :gutter="0" align="center">
+                <flexbox-item :span="0.08"><svg-icon icon-class='card'></svg-icon></flexbox-item>
+                <flexbox-item class="base_info">
+                  <span>{{item.home}}</span>
+                  <span>{{item.car}}</span>
+                  <span>{{item.baodan}}</span>
+                  <span>{{item.card}}</span>
+                  <span>{{item.shebao}} </span>
+                  <span>{{item.gongjijing}}</span>
+                </flexbox-item>
+              </flexbox>
+            </div>
+            <div class="card_footer">
+              <flexbox :gutter="0" align="center">
+                <flexbox-item :span="6" class="order_time">
+                  <p>{{item.time|transformTime}}</p>
+                </flexbox-item>
+                <flexbox-item :span="6" class="order_money">
+                  <p>3</p>
+                </flexbox-item>
+              </flexbox>
+            </div>
+           </router-link>
         </div>
       </flexbox-item>
     </flexbox>
-    <div class="loading-wrapper"></div>
     </scroll>
   </div>
 </template>
@@ -61,7 +62,7 @@ export default {
   },
   data () {
     return {
-      user_info: [
+      /* user_info: [
         {
           name: '侯**',
           age: '18岁',
@@ -137,9 +138,11 @@ export default {
           gongjijing: '有公积金',
           jifen: 80
         }
-      ],
+      ], */
+      user_info: [],
       pullDownRefresh: true,
-      pullDownRefreshThreshold: 90,
+      pullDownRefreshTxt: '刷新成功',
+      pullDownRefreshThreshold: 65,
       pullDownRefreshStop: 40,
       pullUpLoad: true,
       pullUpLoadThreshold: 0,
@@ -151,7 +154,8 @@ export default {
     pullDownRefreshObj: function () {
       return this.pullDownRefresh ? {
         threshold: parseInt(this.pullDownRefreshThreshold),
-        stop: parseInt(this.pullDownRefreshStop)
+        stop: parseInt(this.pullDownRefreshStop),
+        txt: this.pullDownRefreshTxt
       } : false
     },
     pullUpLoadObj: function () {
@@ -173,10 +177,18 @@ export default {
           this.$refs.scroll.forceUpdate()
         }
       }, 2000) */
+      pullApi.Datainit().then((res) => {
+        // console.log(res)
+        if (res.data) {
+          this.user_info = res.data
+        } else {
+          this.$refs.scroll.forceUpdate()
+        }
+      })
     },
     onPullingUp () { // 上拉加载
       // 更新数据
-      console.log('pulling up and load data')
+      // console.log('pulling up and load data')
       /* setTimeout(() => {
         if (Math.random() > 0.5) {
           // 如果有新数据
@@ -188,9 +200,13 @@ export default {
         }
       }, 1500) */
       pullApi.pull().then((res) => {
-        res.data.map((item) => {
-          this.user_info = this.user_info.concat(item)
-        })
+        if (res.data) {
+          res.data.map((item) => {
+            this.user_info = this.user_info.concat(item)
+          })
+        } else {
+          this.$refs.scroll.forceUpdate()
+        }
         // this.user_info = this.user_info.concat(res)
       })
     },
@@ -198,6 +214,13 @@ export default {
       this.nextTick(() => {
         this.$refs.scroll.destroy()
         this.$refs.scroll.initScroll()
+      })
+    },
+    initbaseData () {
+      pullApi.Datainit().then((res) => {
+        if (res.data) {
+          this.user_info = res.data
+        }
       })
     }
   },
@@ -214,17 +237,21 @@ export default {
       },
       deep: true
     }
+  },
+  mounted () {
+    this.initbaseData()
   }
 }
 </script>
 
 <style lang="less" scoped>
 .wrapper{
-  height: e('calc(100vh - 99px)');
+  height: e('calc(100vh - 99px)')!important;
   .list_item{
   background-color: #fff;
   box-shadow:0px 0px 8px 1px rgba(0,0,0,0.1);
   margin-top: 13px;
+  padding: 0!important;
   box-sizing: border-box;
   overflow: hidden;
   .card_title {

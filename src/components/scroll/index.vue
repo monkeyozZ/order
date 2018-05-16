@@ -131,7 +131,7 @@ export default {
     }
   },
   created () {
-    this.pullDownInitTop = -50
+    this.pullDownInitTop = -46
   },
   mounted () {
     setTimeout(() => {
@@ -297,8 +297,9 @@ export default {
     justify-content: center;
     align-items: center;
     transition: all;
+    font-size:14px;
     .after-trigger{
-      margin-top: 10px;
+      margin-top: 0px;
     }
   }
   .pullup-wrapper{
@@ -307,6 +308,7 @@ export default {
     justify-content: center;
     align-items: center;
     padding: 16px 0;
+    font-size:14px;
   }
 }
 </style>

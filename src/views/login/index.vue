@@ -21,7 +21,7 @@
           <x-button class="login_btn" @click.native="submitForm">登录</x-button>
 
           <div class="tip_box">
-            <router-link to="/about" tag="a" class="forget">忘记密码？</router-link>
+            <router-link to="/updatepass" tag="a" class="forget">忘记密码？</router-link>
             <router-link to="/about" tag="a" class="goother">先去逛逛？</router-link>
           </div>
         </flexbox-item>
@@ -101,7 +101,7 @@ export default {
       }
 
       if (this.isSubmit) {
-        this.myalert('success')
+        this.$router.push('/order/list')
       }
     }
   }

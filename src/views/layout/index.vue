@@ -1,8 +1,15 @@
 <template>
 <div>
-  <v-header :headertext="title"></v-header>
+  <v-header v-if="$route.path !== '/person/own'"></v-header>
   <router-view></router-view>
-  <v-footer :curselect = "curselect"></v-footer>
+  <v-footer v-if="$route.path !== '/person/auth'
+  && $route.path !== '/person/personUploader'
+  && $route.path !== '/person/idcardUploader'
+  && $route.path !== '/person/zizhiauth'
+  && $route.path !== '/own/integral'
+  && $route.path !== '/own/jcoin'
+  && $route.path !== '/integral/strategy'
+  && $route.path !== '/recharge/center'"></v-footer>
 </div>
 </template>
 
@@ -16,13 +23,7 @@ export default {
   },
   data () {
     return {
-      title: '',
-      curselect: ''
     }
-  },
-  beforeMount () {
-    this.title = this.$route.meta.headertext
-    this.curselect = this.$route.name
   }
 }
 </script>

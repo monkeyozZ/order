@@ -2,15 +2,15 @@ import request from '@/utils/request'
 
 const Datainit = async () => {
   return request({
-    url: '/static/customer.json',
+    url: '/static/orderlist.json',
     method: 'get',
-    params: {'id': 1}
+    params: { 'id': 1 }
   })
 }
 
 const pull = async (id) => {
   return request({
-    url: '/static/customer.json',
+    url: '/static/orderlist.json',
     method: 'get',
     params: { 'id': id }
   })

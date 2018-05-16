@@ -1,15 +1,15 @@
 <template>
   <div>
     <tabbar>
-      <tabbar-item :selected="curselect === 'orderList'">
-        <svg-icon slot="icon" icon-class="order"></svg-icon>
-        <span slot="label">抢单</span>
+      <tabbar-item :selected="$route.path == '/order/list'" link="/order/list">
+          <svg-icon slot="icon" icon-class="order"></svg-icon>
+          <span slot="label">抢单</span>
       </tabbar-item>
-      <tabbar-item :selected="curselect === 'customerList'">
+      <tabbar-item :selected="$route.path == '/customer/list'" link="/customer/list">
         <svg-icon slot="icon" icon-class="customer"></svg-icon>
         <span slot="label">客户</span>
       </tabbar-item>
-      <tabbar-item @on-item-click="say">
+      <tabbar-item :selected="$route.path == '/person/own'" link="/person/own">
         <svg-icon slot="icon" icon-class="me"></svg-icon>
         <span slot="label">我的</span>
       </tabbar-item>
@@ -21,7 +21,6 @@
 import { Tabbar, TabbarItem } from 'vux'
 import testAPI from '@/api/test'
 export default {
-  props: ['curselect'],
   components: {
     Tabbar,
     TabbarItem
