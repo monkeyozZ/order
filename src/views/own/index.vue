@@ -57,7 +57,7 @@
          <div class="icon_box">
             <svg-icon icon-class="kefu"></svg-icon>
           </div>
-          <span>客服电话<a href="13808888888" class="tel">13808888888</a></span>
+          <span>客服电话<a href="tel:13808888888" class="tel">13808888888</a></span>
         </cell-box>
       </group>
       <Flexbox :gutter="0" justify="center" class="btn_sinout">
@@ -70,14 +70,13 @@
 </template>
 
 <script>
-import {Flexbox, FlexboxItem, CellBox, Group, Cell, XButton} from 'vux'
+import {Flexbox, FlexboxItem, CellBox, Group, XButton} from 'vux'
 export default {
   components: {
     Flexbox,
     FlexboxItem,
     CellBox,
     Group,
-    Cell,
     XButton
   },
   data () {
